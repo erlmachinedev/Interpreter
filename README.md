@@ -1,2 +1,2 @@
 # Interpreter
-Embedded program to execute Lua instructions
+Embedded program to execute Lua code
