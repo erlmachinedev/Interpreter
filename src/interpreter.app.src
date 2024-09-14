@@ -1,0 +1,13 @@
+{application, interpreter,
+ [
+  {description,  "Embedded program to execute Lua code"},
+  {vsn,          "0.0.1"},
+  {modules,      []},
+  {applications, [
+                  kernel, stdlib,
+                  erlbox
+                 ]},
+
+  {licenses, ["apache-2.0"]},
+  {links, [{"Github", "https://github.com/erlmachinedev/interpreter"}]}
+ ]}.
