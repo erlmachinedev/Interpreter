@@ -12,7 +12,7 @@
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
 
-%% File    : luerl_parse.yrl
+%% File    : interpreter_parse.yrl
 %% Author  : Robert Virding
 %% Purpose : Parser for LUA 5.2.
 

@@ -12,7 +12,7 @@
 %% See the License for the specific language governing permissions and
 %% limitations under the License.
 
-%% File    : luerl_scan.xrl
+%% File    : interpreter_scan.xrl
 %% Author  : Robert Virding
 %% Purpose : Token definitions for LUA.
 
