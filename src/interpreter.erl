@@ -1,2 +1,44 @@
 -module(interpreter).
--export([]).
+
+-import(erlbox, [success/1]).
+
+-export([parse/1]).
+
+-include_lib("erlbox/include/erlbox.hrl").
+
+-type code() :: string().
+
+-type expression() :: erl_parse:abstract_expr().
+
+%% NOTE The host app is responsible to catch expression
+-spec parse(code()) -> expression().
+parse(Code) ->
+    %% TODO Indicate error (throw)
+    Code = interpreter_parse:process(_ = interpreter_scan:string(Code)),
+    
+    translate(Code).
+
+translate(Code) ->
+    %% TODO
+    Code.
+
+%% TODO Introduce ENV (optional)
+
+%% NOTE The host app is responsible to catch expression
+-spec exec(expression()) -> success() | success(term()).
+exec(Exp) ->
+    io:format("~tp", [Exp]),
+    %% TODO Indicate error 
+    %% TODO Run the code
+    success().
+
+file(Filename) ->
+    {ok, Bin} = erl_prim_loader:read_file(Filename),
+    
+    Res = binary_to_list(Bin),
+    Res.
+
+eval(Filename) ->
+    Code = file(Filename),
+    
+    exec(_Exp = parse(Code)),

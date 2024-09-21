@@ -234,14 +234,14 @@ uminus -> '-' exp : {op,line('$1'),'-','$2'} .
 
 Erlang code.
 
--export([chunk/1]).
+-export([process/1]).
 
-%% chunk(Tokens) -> FunctionDef | Error.
+%% process(Tokens) -> FunctionDef | Error.
 %% Return the parse as a callable nameless function definition.
 
-chunk(Ts) ->
+process(Ts) ->
     case parse(Ts) of
-        {error,_}=Error -> Error;
+        {error,Reason}=Error -> error(Reason);
         {ok,Body} -> {ok,{functiondef,1,[{'...',1}],Body}}
     end.
 
