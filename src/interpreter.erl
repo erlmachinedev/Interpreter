@@ -1,8 +1,8 @@
 -module(interpreter).
 
--import(erlbox, [success/1]).
+-import(erlbox, [success/0, success/1]).
 
--export([parse/1]).
+-export([parse/1, exec/1, eval/1]).
 
 -include_lib("erlbox/include/erlbox.hrl").
 
@@ -14,9 +14,9 @@
 -spec parse(code()) -> expression().
 parse(Code) ->
     %% TODO Indicate error (throw)
-    Code = interpreter_parse:process(_ = interpreter_scan:string(Code)),
+    Exp = interpreter_parse:process(_ = interpreter_scan:process(Code)),
     
-    translate(Code).
+    translate(Exp).
 
 translate(Code) ->
     %% TODO
@@ -41,4 +41,4 @@ file(Filename) ->
 eval(Filename) ->
     Code = file(Filename),
     
-    exec(_Exp = parse(Code)),
+    exec(_Exp = parse(Code)).

@@ -239,9 +239,9 @@ Erlang code.
 %% process(Tokens) -> FunctionDef | Error.
 %% Return the parse as a callable nameless function definition.
 
-process(Ts) ->
-    case parse(Ts) of
-        {error,Reason}=Error -> error(Reason);
+process(Code) ->
+    case parse(Code) of
+        {error,Reason} -> error(Reason);
         {ok,Body} -> {ok,{functiondef,1,[{'...',1}],Body}}
     end.
 

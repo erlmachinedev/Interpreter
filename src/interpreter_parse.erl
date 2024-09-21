@@ -2,14 +2,14 @@
 -export([parse/1, parse_and_scan/1, format_error/1]).
 -file("src/interpreter_parse.yrl", 235).
 
--export([chunk/1]).
+-export([process/1]).
 
-%% chunk(Tokens) -> FunctionDef | Error.
+%% process(Tokens) -> FunctionDef | Error.
 %% Return the parse as a callable nameless function definition.
 
-chunk(Ts) ->
-    case parse(Ts) of
-        {error,_}=Error -> Error;
+process(Code) ->
+    case parse(Code) of
+        {error,Reason} -> error(Reason);
         {ok,Body} -> {ok,{functiondef,1,[{'...',1}],Body}}
     end.
 

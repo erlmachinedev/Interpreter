@@ -14,8 +14,16 @@
 %% User code. This is placed here to allow extra attributes.
 -file("src/interpreter_scan.xrl", 139).
 
+-export([process/1]).
+
 -export([is_keyword/1]).
 -export([string_chars/1,chars/1]).
+
+process(Code) ->
+    case string(Code) of
+        {ok,Tokens,_EndLine} -> Tokens;
+        {Line,Mod,Desc} -> error(Mod, [Line, _Reason = Desc])
+    end.
 
 %% name_token(Chars, Line) ->
 %%     {token,{'NAME',Line,Symbol}} | {Name,Line} | {error,E}.
@@ -130,12 +138,12 @@ string_chars([], Acc) ->
 long_string_token(Cs0, Len, BrLen, Line) ->
     %% Strip the brackets and remove first char if a newline.
     %% Note we export Cs1 here, :-)
-    case string:substr(Cs0, BrLen+1, Len - 2*BrLen) of
-	[$\n | Cs1] -> Cs1;
-	Cs1 -> Cs1
+    Cs2=case string:substr(Cs0, BrLen+1, Len - 2*BrLen) of
+	   [$\n | Cs1] -> Cs1;
+	   Cs1 -> Cs1
     end,
     try
-	String = unicode:characters_to_binary(Cs1, utf8, utf8),
+	String = unicode:characters_to_binary(Cs2, utf8, utf8),
 	{token,{'LITERALSTRING',Line,String}}
     catch
 	_:_ ->
@@ -584,7 +592,7 @@ tab_size() -> 8.
 %% return signal either an unrecognised character or end of current
 %% input.
 
--file("src/interpreter_scan.erl", 552).
+-file("src/interpreter_scan.erl", 560).
 yystate() -> 91.
 
 yystate(94, [45|Ics], Line, Col, Tlen, Action, Alen) ->
