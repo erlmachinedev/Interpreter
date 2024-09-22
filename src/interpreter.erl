@@ -30,7 +30,7 @@ translate(Code) ->
 exec(Exp) ->
     exec(Exp, _Env = #{}).
     
--spec exec(exp(), env()) -> success(term(), env()) | failure(env()).
+-spec exec(exp(), env()) -> success(term(), env()) | failure(term(), env()).
 exec(Exp, Env) ->
     io:format("~tp ~tp", [Exp, Env]),
     %% TODO Indicate error 
