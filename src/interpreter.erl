@@ -35,7 +35,7 @@ exec(Exp, Env) ->
     io:format("~tp ~tp", [Exp, Env]),
     %% TODO Indicate error 
     %% TODO Run the code
-    success().
+    success(nil, Env).
 
 file(Filename) ->
     {ok, Bin} = erl_prim_loader:read_file(Filename),
