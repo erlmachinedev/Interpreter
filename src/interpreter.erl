@@ -1,6 +1,6 @@
 -module(interpreter).
 
--import(erlbox, [success/0, success/1]).
+-import(erlbox, [success/0, success/1, success/2]).
 
 -export([parse/1]).
 
@@ -52,3 +52,5 @@ eval(Filename, Env) ->
     exec(_Exp = parse(Code), Env).
     
 %%% Expression API
+
+%% NOTE The expression should produce runtime error (assing wrong arg, etc).

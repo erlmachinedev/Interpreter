@@ -4,13 +4,12 @@
 
 -export([process/1]).
 
-%% process(Tokens) -> FunctionDef | Error.
-%% Return the parse as a callable nameless function definition.
+%% process(Tokens) -> Code.
 
-process(Code) ->
-    case parse(Code) of
+process(Tokens) ->
+    case parse(Tokens) of
         {error,Reason} -> error(Reason);
-        {ok,Body} -> {ok,{functiondef,1,[{'...',1}],Body}}
+        {ok,Code} -> Code
     end.
 
 cat(T) -> element(1, T).
@@ -235,7 +234,7 @@ yecctoken2string1(Other) ->
 
 
 
--file("src/interpreter_parse.erl", 238).
+-file("src/interpreter_parse.erl", 237).
 
 -dialyzer({nowarn_function, yeccpars2/7}).
 -compile({nowarn_unused_function,  yeccpars2/7}).
@@ -5407,4 +5406,4 @@ yeccpars2_206_(__Stack0) ->
   end | __Stack].
 
 
--file("src/interpreter_parse.yrl", 290).
+-file("src/interpreter_parse.yrl", 289).

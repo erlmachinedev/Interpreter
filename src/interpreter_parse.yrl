@@ -236,13 +236,12 @@ Erlang code.
 
 -export([process/1]).
 
-%% process(Tokens) -> FunctionDef | Error.
-%% Return the parse as a callable nameless function definition.
+%% process(Tokens) -> Code.
 
-process(Code) ->
-    case parse(Code) of
+process(Tokens) ->
+    case parse(Tokens) of
         {error,Reason} -> error(Reason);
-        {ok,Body} -> {ok,{functiondef,1,[{'...',1}],Body}}
+        {ok,Code} -> Code
     end.
 
 cat(T) -> element(1, T).
