@@ -2,16 +2,21 @@
 
 -import(erlbox, [success/0, success/1]).
 
--export([parse/1, exec/1, eval/1]).
+-export([parse/1]).
+
+-export([exec/1, exec/2, eval/1, eval/2]).
 
 -include_lib("erlbox/include/erlbox.hrl").
 
 -type code() :: string().
 
--type expression() :: erl_parse:abstract_expr().
+-type exp() :: erl_parse:abstract_expr().
+-type env() :: map().
+
+%% TODO Introduce Lua datatype
 
 %% NOTE The host app is responsible to catch expression
--spec parse(code()) -> expression().
+-spec parse(code()) -> exp().
 parse(Code) ->
     %% TODO Indicate error (throw)
     Exp = interpreter_parse:process(_ = interpreter_scan:process(Code)),
@@ -22,12 +27,12 @@ translate(Code) ->
     %% TODO
     Code.
 
-%% TODO Introduce ENV (optional)
-
-%% NOTE The host app is responsible to catch expression
--spec exec(expression()) -> success() | success(term()).
 exec(Exp) ->
-    io:format("~tp", [Exp]),
+    exec(Exp, _Env = #{}).
+    
+-spec exec(exp(), env()) -> success(term(), env()) | failure(env()).
+exec(Exp, Env) ->
+    io:format("~tp ~tp", [Exp, Env]),
     %% TODO Indicate error 
     %% TODO Run the code
     success().
@@ -39,6 +44,11 @@ file(Filename) ->
     Res.
 
 eval(Filename) ->
+    eval(Filename, _Env = #{}).
+    
+eval(Filename, Env) ->
     Code = file(Filename),
     
-    exec(_Exp = parse(Code)).
+    exec(_Exp = parse(Code), Env).
+    
+%%% Expression API
