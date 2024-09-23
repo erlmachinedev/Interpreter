@@ -15,7 +15,7 @@
 
 %% TODO Introduce Lua datatype
 
-%% NOTE The host app is responsible to catch expression
+%% NOTE The host app is responsible to catch exception
 -spec parse(code()) -> exp().
 parse(Code) ->
     %% TODO Indicate error (throw)
@@ -53,4 +53,6 @@ eval(Filename, Env) ->
     
 %%% Expression API
 
-%% NOTE The expression should produce runtime error (assing wrong arg, etc).
+%% NOTE The expression should produce runtime error (passing wrong args, etc).
+
+%% NOTE The Fun expression (function declaration)
