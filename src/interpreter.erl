@@ -32,7 +32,7 @@ exec(Exp) ->
 
 %% TODO Consider return type name {value, Value, NewBindings} | Value
 
--spec exec(exp(), env(), function() | none) -> term().
+-spec exec(exp(), env(), function() | none) -> return(term(), env()).
 exec(Exp, Env) ->
     io:format("~tp ~tp", [Exp, Env]),
     %% TODO Indicate error 
@@ -52,7 +52,9 @@ file(Filename) ->
 
 eval(Filename) ->
     eval(Filename, _Env = #{}).
-    
+
+
+-spec eval(filename(), env()) -> term().
 eval(Filename, Env) ->
     Code = file(Filename),
     
