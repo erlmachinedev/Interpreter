@@ -29,19 +29,26 @@ translate(Code) ->
 
 exec(Exp) ->
     exec(Exp, _Env = #{}).
-    
--spec exec(exp(), env()) -> success(term(), env()) | failure(term(), env()).
+
+%% TODO Consider return type name {value, Value, NewBindings} | Value
+
+-spec exec(exp(), env(), function() | none) -> term().
 exec(Exp, Env) ->
     io:format("~tp ~tp", [Exp, Env]),
     %% TODO Indicate error 
     %% TODO Run the code
-    success(nil, Env).
+    
+    %% TODO Add ENV to Bindings Var
+    
+    erl_eval:expr(Exp, Env, Fun).
 
 file(Filename) ->
     {ok, Bin} = erl_prim_loader:read_file(Filename),
     
     Res = binary_to_list(Bin),
     Res.
+
+%% TODO eval returns Value
 
 eval(Filename) ->
     eval(Filename, _Env = #{}).
