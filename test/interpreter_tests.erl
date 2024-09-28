@@ -13,6 +13,8 @@ interpreter_test() ->
     
     %% TODO Read from file (Mock)
     
+    interpreter:exec(interpreter:parse(Test)),
+    
     [ fun () -> interpreter:exec(_Code = interpreter:parse(Test))
                 %Res0 = interpreter:eval(File)
       end
