@@ -13,7 +13,10 @@
 -export([parse/1]).
 
 -export([exec/1, exec/2, exec/3]).
--export([eval/1, eval/2]).
+
+-export([eval/1]).
+-export([eval/2]).
+-export([eval/3]).
 
 -include_lib("erlbox/include/erlbox.hrl").
 
@@ -31,7 +34,7 @@
 %% NOTE The host app is responsible to catch exception
 -spec parse(code()) -> exp().
 parse(Code) ->
-    %% TODO Indicate error (throw)
+    %% TODO Test indicated error (throw)
     Exp = interpreter_parse:process(_ = interpreter_scan:process(Code)),
     
     translate(Exp).
@@ -44,10 +47,10 @@ translate(Code) ->
     
     Node = module_qualifier(Mod, Fun),
 
-    Text = string("~tp:~tp(test)"),
-    Args = list([Mod, Fun], none),
+    Test = string("~tp:~tp(test)"),
+    List = list([Mod, Fun], none),
 
-    Res = application(Node, [_Output = atom(user), Text, Args]),
+    Res = application(Node, [_Output = atom(user), Test, List]),
     
     revert(Res).
 
@@ -63,7 +66,7 @@ exec(Exp, Env) ->
 
 -spec exec(exp(), env(), function() | none) -> return(term(), env()).
 exec(Exp, Env, Fun) ->
-    io:format(user, "~tp ~tp ~tp~n", [Exp, Env, Fun]),
+    %io:format(user, "~tp ~tp ~tp~n", [Exp, Env, Fun]),
     %% TODO Indicate error 
     %% TODO Run the code
     
@@ -82,12 +85,14 @@ file(Filename) ->
 eval(Filename) ->
     eval(Filename, _Env = #{}).
 
-
--spec eval(filename(), env()) -> term().
 eval(Filename, Env) ->
+    eval(Filename, Env, _Fun = none).
+
+-spec eval(filename(), env(), function() | none) -> return(term(), env()).
+eval(Filename, Env, Fun) ->
     Code = file(Filename),
     
-    exec(_Exp = parse(Code), Env).
+    exec(_Exp = parse(Code), Env, Fun).
     
 %%% Expression API
 
