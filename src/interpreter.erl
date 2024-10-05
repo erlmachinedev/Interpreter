@@ -34,7 +34,6 @@
 %% NOTE The host app is responsible to catch exception
 -spec parse(code()) -> exp().
 parse(Code) ->
-    %% TODO Test indicated error (throw)
     Exp = interpreter_parse:process(_ = interpreter_scan:process(Code)),
     
     translate(Exp).

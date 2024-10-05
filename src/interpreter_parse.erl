@@ -8,7 +8,7 @@
 
 process(Tokens) ->
     case parse(Tokens) of
-        {error,Reason} -> error(Reason);
+        {error, {_Line, _Mod, Desc}} -> error(format_error(Desc));
         {ok,Code} -> Code
     end.
 

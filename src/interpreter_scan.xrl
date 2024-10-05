@@ -146,7 +146,7 @@ Erlang code.
 process(Code) ->
     case string(Code) of
         {ok,Tokens,_EndLine} -> Tokens;
-        {Line,Mod,Desc} -> error(Mod, [Line, _Reason = Desc])
+        {error, {_Line, _Mod, Desc}, _Warnings} -> error(format_error(Desc))
     end.
 
 %% name_token(Chars, Line) ->

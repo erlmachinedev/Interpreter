@@ -10,6 +10,15 @@ interpreter_test_() ->
     %% TODO Read from file (Mock)
     
     [ fun () -> Test = "a = 1",
+
+                {_, {Reason, _Stacktrace}} = catch(interpreter:parse("№")),
+    
+                ct:print(user, "Reason: ~ts~n", [Reason]),
+                
+                {_, {Reason0, _Stacktrace0}} = catch(interpreter:parse("1()")),
+    
+                ct:print(user, "Reason: ~ts~n", [Reason0]),
+                
                 Code = interpreter:parse(Test),
                 
                 ?debugVal(Code),
