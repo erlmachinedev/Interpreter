@@ -22,7 +22,6 @@
 
 -type code() :: string().
 
--type exp() :: erl_parse:abstract_expr().
 -type env() :: map().
 
 -type return(Res, Env) :: {value, Res, Env}.
@@ -31,26 +30,57 @@
 
 %% TODO Introduce Lua datatype
 
--spec parse(code()) -> exp().
+-spec parse(code()) -> term().
 parse(Code) ->
-    Exp = interpreter_parse:process(_ = interpreter_scan:process(Code)),
+    Res = interpreter_parse:process(_ = interpreter_scan:process(Code)),
     
-    translate(Exp).
+    translate(Res).
 
 translate(Code) ->
-    io:format("~tp", [Code]),
+    io:format(user, "Code: ~tp~n", [Code]),
     
     Mod = atom(io),
     Fun = atom(format),
     
     Node = module_qualifier(Mod, Fun),
 
-    Test = string("~tp:~tp(test)"),
+    Test = string("~tp:~tp(test)~n"),
     List = list([Mod, Fun], none),
 
     Res = application(Node, [_Output = atom(user), Test, List]),
     
     revert(Res).
+
+
+%% NOTE The translation is divided onto terminals and nonterminals parts
+%% NOTE The terminal can call nonterminal and vice versa 
+
+%% NOTE The each node is represented via application (even terminals)
+
+statement([], Acc) ->
+    Acc;
+
+statement([{_Tag = 'assign', _, Vars, Exps}|T], Acc) ->
+    Namelist = namelist(Vars),
+    
+    
+
+statement([{_Tag ='NAME', _, Name}|T], Acc)
+
+%% Expression API
+
+namelist(List) ->
+    [ Name || {_Tag ='NAME', _, Name} <- List ].
+
+%chunk()
+%block()
+
+%exp()
+
+%var(Name, Env) ->
+%    maps:get(Name, Env, _Default = nil).
+
+%statement() 
 
 %% TODO Dedicated nodes to construct the type
 
@@ -62,7 +92,7 @@ exec(Exp) ->
 exec(Exp, Env) ->
     exec(Exp, Env, _Fun = none).
 
--spec exec(exp(), env(), function() | none) -> return(term(), env()).
+-spec exec(term(), env(), function() | none) -> return(term(), env()).
 exec(Exp, Env, Fun) ->
     %io:format(user, "~tp ~tp ~tp~n", [Exp, Env, Fun]),
     %% TODO Indicate error 

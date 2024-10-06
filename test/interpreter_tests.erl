@@ -43,15 +43,25 @@ exec_test_() ->
                 interpreter:exec(Code)
       end,
       
-      fun () -> Test = "for i = 10, 1, -1 do print (i) end",
-                Code = interpreter:parse(Test),
+      fun () -> Test = "function test (a) print (a) end",
       
+                Code = interpreter:parse(Test),
+                
                 ?debugVal(Code),
-                  
+                      
                 interpreter:exec(Code)
       end,
       
-      fun () -> Test = "for i = 15, 1, -1 do print (i) end",
+      fun () -> Test = "function test () print (\"ping\") end",
+      
+                Code = interpreter:parse(Test),
+                
+                ?debugVal(Code),
+                      
+                interpreter:exec(Code)
+      end,
+      
+      fun () -> Test = "for i = 15, 1, -1 do break; print (i) end",
                 Code = interpreter:parse(Test),
       
                 ?debugVal(Code),
